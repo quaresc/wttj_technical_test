@@ -8,12 +8,16 @@ defmodule Continents do
 
   def get_continents() do
     [
-      %{continent: "Europe", polygon: %{type: "Polygon", coordinates: @europe}},
-      %{continent: "America", polygon: %{type: "Polygon", coordinates: @america}},
-      %{continent: "Asia", polygon: %{type: "Polygon", coordinates: @asia}},
-      %{continent: "Africa", polygon: %{type: "Polygon", coordinates: @africa}},
-      %{continent: "Oceania", polygon: %{type: "Polygon", coordinates: @oceania}},
-      %{continent: "Antarctica", polygon: %{type: "Polygon", coordinates: @antarctica}}
+      %{name: "Europe", polygon: %{type: "Polygon", coordinates: @europe}},
+      %{name: "America", polygon: %{type: "Polygon", coordinates: @america}},
+      %{name: "Asia", polygon: %{type: "Polygon", coordinates: @asia}},
+      %{name: "Africa", polygon: %{type: "Polygon", coordinates: @africa}},
+      %{name: "Oceania", polygon: %{type: "Polygon", coordinates: @oceania}},
+      %{name: "Antarctica", polygon: %{type: "Polygon", coordinates: @antarctica}}
     ]
+  end
+
+  def contains?(continent, long, lat) do
+    Topo.contains?(continent.polygon, {long, lat})
   end
 end

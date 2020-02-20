@@ -18,6 +18,10 @@ for each continents and then calculate if the point was inside or outside this b
 
 But I encountered a first problem with Asia and its not so squared borders. So I designed multiple boxes for each complicated continents but I wasn't quite happy with this solution because I think I would have lost some clarity. So instead I went with 1 continent, 1 polygon. (I think it would be interesting to run few benchmarks with both solutions to determine if performances were really impacted or not so much)
 
+### Link professions with continents
+
+I sorted my continents list with the idea that jobs input will be mostly European, American and Asian. Putting Antarctica first (could be removed for optimization ?) with Oceania second for example, would have been a waste of iterations to find the right continent and therefore a lost of time in average.
+
 ## Built With
 
 * [Elixir 1.10.1](https://github.com/elixir-lang/elixir/releases/tag/v1.10.1)
