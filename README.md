@@ -38,6 +38,9 @@ iex(1)> WttjTechnicalTest.aggregate_professions
 
 ## Exercice #2
 
+I would try to scale out by running in parallel the computation to have better performances and scalability. Elixir would be great for this (and I think it could be easier than a Ruby implementation and its GIL for exemple).
+In order to achieve this, we could have workers to divide the existing amount of offers to compute (like 1 worker for 10.000 existing offers to aggregate) with a process responsible of monitoring. For incoming offers (at a rate of 1000 offers per second), we could split up the batch and have a process for one offer for exemple. If performances are not there, we might consider run the computation on multiple nodes/physical machines in parallel.
+
 ## Exercice #3
 
 The route is accessible at the endpoint `/offers` with the following query params : `latitude`, `longitude`, `radius` (in km)
