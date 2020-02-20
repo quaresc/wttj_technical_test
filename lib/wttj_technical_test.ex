@@ -7,13 +7,17 @@ defmodule WttjTechnicalTest do
   @jobs_file "./data/technical-test-jobs.csv"
   @profession_file "./data/technical-test-professions.csv"
 
+  def parse_csv(file) do
+    file
+    |> File.stream!
+    |> CSV.parse_stream
+  end
+
   def aggregate_professions do
     continents = Continents.get_continents
     professions = get_professions()
 
-    @jobs_file
-    |> File.stream!
-    |> CSV.parse_stream
+    parse_csv(@jobs_file)
     |> Enum.map(fn [profession_id,_contract_type,_name,lat,long] ->
       profession = professions[profession_id] || "Unknown"
       determine_profession_continent(long, lat, continents, profession)
@@ -31,9 +35,7 @@ defmodule WttjTechnicalTest do
   end
 
   def get_professions() do
-    @profession_file
-    |> File.stream!
-    |> CSV.parse_stream
+    parse_csv(@profession_file)
     |> Enum.into(%{}, fn [id, _job, profession] -> {id, profession} end)
   end
 
@@ -48,5 +50,16 @@ defmodule WttjTechnicalTest do
     else
       default_value
     end
+  end
+
+  def get_offers_in_radius(origin, radius) do
+    parse_csv(@jobs_file)
+    |> Enum.map(fn [_profession_id,_contract_type,name,lat,long] ->
+      if lat != "" && long != "" do
+        dist = Distance.GreatCircle.distance({String.to_float(long), String.to_float(lat)}, origin)
+        if dist <= radius, do: %{"offer" => name, "longitude" => long, "latitude" => lat, "distance" => dist}
+      end
+    end)
+    |> Enum.reject(&is_nil/1)
   end
 end
